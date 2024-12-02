@@ -59,7 +59,8 @@ class BaseCreateTicketView(abstract_views.AbstractCreateTicketMixin, FormView):
         if not request.user.is_authenticated and helpdesk_settings.HELPDESK_REDIRECT_TO_LOGIN_BY_DEFAULT:
             return HttpResponseRedirect(reverse('login'))
 
-        if is_helpdesk_staff(request.user) or \
+        if (is_helpdesk_staff(request.user) and \
+                not settings.HELPDESK_PUBLIC_ENABLED) or \
                 (request.user.is_authenticated and
                  helpdesk_settings.HELPDESK_ALLOW_NON_STAFF_TICKET_UPDATE):
             try:

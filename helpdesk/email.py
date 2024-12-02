@@ -163,10 +163,12 @@ def pop3_sync(q, logger, server):
         except IgnoreTicketException:
             logger.warn(
                 "Message %s was ignored and will be left on POP3 server" % msgNum)
+            continue
         except DeleteIgnoredTicketException:
             logger.warn(
                 "Message %s was ignored and deleted from POP3 server" % msgNum)
             server.dele(msgNum)
+            continue
         else:
             if ticket:
                 server.dele(msgNum)
@@ -219,12 +221,15 @@ def imap_sync(q, logger, server):
                     ticket = extract_email_metadata(message=full_message, queue=q, logger=logger)
                 except IgnoreTicketException:
                     logger.warn("Message %s was ignored and will be left on IMAP server" % num)
+                    continue
                 except DeleteIgnoredTicketException:
                     server.store(num, '+FLAGS', '\\Deleted')
                     logger.warn("Message %s was ignored and deleted from IMAP server" % num)
+                    continue
                 except TypeError as te:
                     # Log the error with stacktrace to help identify what went wrong
                     logger.error(f"Unexpected error processing message: {te}", exc_info=True)
+                    continue
                 else:
                     if ticket:
                         server.store(num, '+FLAGS', '\\Deleted')

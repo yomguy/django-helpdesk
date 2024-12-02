@@ -856,7 +856,7 @@ def process_as_attachment(
         ext = mimetypes.guess_extension(part.get_content_type())
         name = f"part-{counter}{ext}"
     # Extract payload accounting for attached multiparts
-    payload_bytes = part.as_bytes() if part.is_multipart() else part.get_payload(decode=True)
+    payload_bytes = part.as_bytes(encoding="UTF-8") if part.is_multipart() else part.get_payload(decode=True)
     files.append(SimpleUploadedFile(name, payload_bytes, mimetypes.guess_type(name)[0]))
     if logger.isEnabledFor(logging.DEBUG):
         logger.debug("Processed MIME as attachment: %s", name)

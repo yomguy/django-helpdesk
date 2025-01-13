@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 COPY ./requirements.txt ./requirements-dev.txt /
 
 # Create Python Dependency and Sub-Dependency Wheels
+RUN pip install packaging
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
   -r requirements.txt \
   -r requirements-dev.txt
@@ -42,3 +43,4 @@ FROM python-run-stage AS backend
 COPY . ${APP_HOME}
 
 ENTRYPOINT ["/entrypoint"]
+CMD ["python3", "demo/manage.py", "runserver", "--noreload", "0.0.0.0:8080"]

@@ -168,8 +168,8 @@ def pop3_sync(q, logger, server):
             )
         except IgnoreTicketException:
             logger.warn(
-                "Message %s was ignored and will be left on POP3 server" % msgNum
-            )
+                "Message %s was ignored and will be left on POP3 server" % msgNum)
+            continue
         except DeleteIgnoredTicketException:
             logger.warn("Message %s was ignored and deleted from POP3 server" % msgNum)
             server.dele(msgNum)

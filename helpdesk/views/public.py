@@ -46,9 +46,10 @@ def create_ticket(request, *args, **kwargs):
 class BaseCreateTicketView(abstract_views.AbstractCreateTicketMixin, FormView):
     def get_form_class(self):
         try:
-            the_module, the_form_class = (
-                helpdesk_settings.HELPDESK_PUBLIC_TICKET_FORM_CLASS.rsplit(".", 1)
-            )
+            (
+                the_module,
+                the_form_class,
+            ) = helpdesk_settings.HELPDESK_PUBLIC_TICKET_FORM_CLASS.rsplit(".", 1)
             the_module = import_module(the_module)
             the_form_class = getattr(the_module, the_form_class)
         except Exception as e:
@@ -65,14 +66,12 @@ class BaseCreateTicketView(abstract_views.AbstractCreateTicketMixin, FormView):
         ):
             return HttpResponseRedirect(reverse("login"))
 
-        if ((
-            is_helpdesk_staff(request.user)
-            and not settings.HELPDESK_PUBLIC_ENABLED
-            )
-            or (
-                request.user.is_authenticated
-                and helpdesk_settings.HELPDESK_ALLOW_NON_STAFF_TICKET_UPDATE
-            )):
+        if (
+            is_helpdesk_staff(request.user) and not settings.HELPDESK_PUBLIC_ENABLED
+        ) or (
+            request.user.is_authenticated
+            and helpdesk_settings.HELPDESK_ALLOW_NON_STAFF_TICKET_UPDATE
+        ):
             try:
                 if request.user.usersettings_helpdesk.login_view_ticketlist:
                     return HttpResponseRedirect(reverse("helpdesk:list"))

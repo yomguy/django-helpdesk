@@ -65,14 +65,14 @@ class BaseCreateTicketView(abstract_views.AbstractCreateTicketMixin, FormView):
         ):
             return HttpResponseRedirect(reverse("login"))
 
-        if (
+        if ((
             is_helpdesk_staff(request.user)
             and not settings.HELPDESK_PUBLIC_ENABLED
             )
             or (
                 request.user.is_authenticated
                 and helpdesk_settings.HELPDESK_ALLOW_NON_STAFF_TICKET_UPDATE
-            ):
+            )):
             try:
                 if request.user.usersettings_helpdesk.login_view_ticketlist:
                     return HttpResponseRedirect(reverse("helpdesk:list"))

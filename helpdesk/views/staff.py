@@ -138,7 +138,7 @@ def dashboard(request):
     if request.user.is_authenticated and hasattr(request.user, "usersettings_helpdesk"):
         tickets_per_page = request.user.usersettings_helpdesk.tickets_per_page
     else:
-        tickets_per_page = 25
+        tickets_per_page = settings.HELPDESK_DEFAULT_SETTINGS["tickets_per_page"]
 
     # page vars for the three ticket tables
     user_tickets_page = request.GET.get(_("ut_page"), 1)

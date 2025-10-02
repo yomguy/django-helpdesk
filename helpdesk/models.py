@@ -1679,7 +1679,10 @@ class SavedSearch(models.Model):
 
 def get_default_setting(setting):
     from helpdesk.settings import DEFAULT_USER_SETTINGS
-
+    try:
+        DEFAULT_USER_SETTINGS.update(settings.HELPDESK_DEFAULT_SETTINGS)
+    except AttributeError:
+        pass
     return DEFAULT_USER_SETTINGS[setting]
 
 

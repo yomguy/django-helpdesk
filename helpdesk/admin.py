@@ -16,6 +16,7 @@ from helpdesk.models import (
     Queue,
     Ticket,
     TicketChange,
+    UserSettings,
 )
 
 
@@ -159,3 +160,4 @@ class ChecklistAdmin(admin.ModelAdmin):
 
 admin.site.register(PreSetReply)
 admin.site.register(EscalationExclusion)
+admin.site.register(UserSettings)

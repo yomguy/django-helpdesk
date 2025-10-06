@@ -44,6 +44,8 @@ import logging
 if helpdesk_settings.HELPDESK_KB_ENABLED:
     from helpdesk.models import KBItem
 
+from profanity.validators import validate_is_profane
+
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
@@ -271,6 +273,7 @@ class AbstractTicketForm(CustomFieldMixin, forms.Form):
         required=True,
         widget=forms.TextInput(attrs={"class": "form-control"}),
         label=_("Summary of the problem"),
+        validators=[validate_is_profane],
     )
 
     body = forms.CharField(
@@ -278,6 +281,7 @@ class AbstractTicketForm(CustomFieldMixin, forms.Form):
         label=_("Description of your issue"),
         required=True,
         help_text=_("Please be as descriptive as possible and include all details"),
+        validators=[validate_is_profane],
     )
 
     priority = forms.ChoiceField(

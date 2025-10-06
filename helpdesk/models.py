@@ -24,6 +24,7 @@ from helpdesk import settings as helpdesk_settings
 from io import StringIO
 from markdown import markdown
 from markdown.extensions import Extension
+from profanity.validators import validate_is_profane
 import mimetypes
 import os
 import re
@@ -497,6 +498,7 @@ class Ticket(models.Model):
     title = models.CharField(
         _("Title"),
         max_length=200,
+        validators=[validate_is_profane],
     )
 
     queue = models.ForeignKey(
@@ -554,6 +556,7 @@ class Ticket(models.Model):
         blank=True,
         null=True,
         help_text=_("The content of the customers query."),
+        validators=[validate_is_profane],
     )
 
     resolution = models.TextField(
@@ -974,12 +977,14 @@ class FollowUp(models.Model):
         max_length=200,
         blank=True,
         null=True,
+        validators=[validate_is_profane],
     )
 
     comment = models.TextField(
         _("Comment"),
         blank=True,
         null=True,
+        validators=[validate_is_profane],
     )
 
     public = models.BooleanField(
